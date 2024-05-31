@@ -44,13 +44,24 @@
         },
         body: JSON.stringify({ word: word })
       })
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+          }
+          return response.json();
+        })
         .then(data => {
           document.getElementById('responseMessage').innerText = 'Word sent successfully!';
         })
         .catch(error => {
-          document.getElementById('responseMessage').innerText = 'Error sending word.';
+          var errorMessage = 'Got an error from Comnoco service: endpoint (endpoint): execution failed:';
+          var innerError = error.message.replace(errorMessage, '').trim();
+          document.getElementById('responseMessage').innerText = innerError;
         });
+    });
+
+    document.getElementById('wordInput').addEventListener('input', function () {
+      document.getElementById('responseMessage').innerText = '';
     });
   </script>
 </body>
