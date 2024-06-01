@@ -39,6 +39,11 @@
       event.preventDefault();
       var word = document.getElementById('wordInput').value;
 
+      if (/[\d]/.test(word)) {
+        responseMessage.innerText = 'Error: Word should not contain numbers.';
+        return;
+      }
+
       fetch('https://trigger.comnoco.com/t/5a6579e7-3666-4aa2-b94f-d743535bb1a9/DisplayWord', {
         method: 'POST',
         headers: {
